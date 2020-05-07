@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from flask import Flask, render_template
 import datetime
 from miplant import MiPlant
@@ -11,6 +12,9 @@ def index():
 @app.route('/tom')
 def tom():
     return render_template('tom.html')
+
+@app.route('/temperature')
+def get_temperature():
 
 @app.route('/sensor')
 def get_sensor_readings():
