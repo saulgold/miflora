@@ -19,14 +19,25 @@ def create_plot():
 
 
     data = [
-        go.Line(
-            x=sensor_data['time'], # assign x as the dataframe column 'x'
-            y=sensor_data['temperature_white']
-        ),
-        go.Line(
-            x=sensor_data['time'],
-            y=sensor_data['temperature_green']
-        )
+        #go.Line(
+        #    x=sensor_data['time'], # assign x as the dataframe column 'x'
+        #    y=sensor_data['temperature_white']
+        #),
+        #go.Line(
+        #    x=sensor_data['time'],
+        #    y=sensor_data['temperature_green']
+        #    title='Sensor Temperature'
+
+        #)
+
+        go.Scatter(
+            
+           x=sensor_data['time'],
+           y=sensor_data['temperature_green'],
+           title='Sensor Temperature',
+           mode='lines'
+
+           )
     ]
 
     graphJSON = json.dumps(data, cls=plotly.utils.PlotlyJSONEncoder)

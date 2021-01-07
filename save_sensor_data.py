@@ -36,22 +36,28 @@ def dict_to_csv(in_dict, save_file):
 if __name__ == '__main__':
     logging.info('Entering loop')
     while True:
+ 
         now = datetime.datetime.now()
+        print(now)
         logging.info('Time: %s',  now.strftime("%m/%d/%Y, %H:%M:%S"))
         logging.info('Reading from sensor')
+       
         
-        logging.info('Read successful')
-         
         sensor_dict = collections.OrderedDict()
+        print(sensor_dict)
+        logging.info('Read successful')
         sensor_dict['time'] =  now
-        sensor_dict['temperature_white']= sensor_white.get_temperature()
+        #sensor_dict['temperature_white']= sensor_white.get_temperature()
         sensor_dict['temperature_green'] = sensor_green.get_temperature()
-        #sensor_dict['battery_level']=sensor.battery
-        #sensor_dict['Light']= sensor.light
-        #sensor_dict['moisture']= sensor.moisture
-        #sensor_dict['conductivity']= sensor.conductivity
+        sensor_dict['battery_green'] = sensor_green.get_battery()
+        sensor_dict['light_green'] = sensor_green.get_light()
+        sensor_dict['moisture_green'] = sensor_green.get_moisture()
+        sensor_dict['conductivity_green'] = sensor_green.get_conductivity()
+        print(sensor_dict)
        
         logging.info('Saving sensor data to: '+sensor_data_csv)
+        if not os.path.isdir(os.path.dirname(sensor_data_csv)):
+            os.makedirs(os.path.dirname(sensor_data_csv))
         dict_to_csv(sensor_dict, sensor_data_csv)
         logging.info('Save successful')
         logging.info('Waiting : %s seconds', str( wait_time))

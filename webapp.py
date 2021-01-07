@@ -2,7 +2,8 @@
 from flask import Flask, render_template
 import datetime
 from miplant import MiPlant
-
+from sensor_utils import MiSensor, device_2
+from plot_utils import create_plot
 app = Flask(__name__)
 
 @app.route('/')
@@ -13,18 +14,21 @@ def index():
 def tom():
     return render_template('tom.html')
 
-@app.route('/temperature')
-def get_temperature():
+@app.route('/plot')
+def plot():
+    graph = create_plot()
+    return render_template('plot.html', plot=graph)
 
 @app.route('/sensor')
 def get_sensor_readings():
-    sensor = MiPlant(address = 'c4:7c:8d:66:64:39')
-    sensor.read()
-    template_data = {'temperature': str(sensor.temperature),
-            'battery_level':sensor.battery,
-            'Light' : sensor.light,
-            'moisture' : sensor.moisture,
-            'conductivity' : sensor.conductivity}
+    sensor = MiSensor(device_2)
+
+    template_data = {'temperature': str(sensor.get_temperature()),
+            'battery_level':str(sensor.get_battery()),
+            'light' : str(sensor.get_light()),
+            'moisture' : str(sensor.get_moisture()),
+            'conductivity' : str(sensor.get_conductivity())
+            }
 
     return render_template('sensor.html', **template_data)
 

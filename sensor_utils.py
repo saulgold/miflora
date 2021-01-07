@@ -23,8 +23,27 @@ class MiSensor:
     def get_temperature(self):
         self.last_temperature = self.poller.parameter_value(MI_TEMPERATURE)
         return self.last_temperature
+    
+    def get_battery(self):
+        self.last_battery = self.poller.parameter_value(MI_BATTERY)
+        return self.last_battery
 
-#if __name__ == '__main__':
-#    sens = MiSensor(device_1)
-#    temp = sens.get_temperature()
-#    print(temp)
+    def get_moisture(self):
+        
+        self.last_moisture = self.poller.parameter_value(MI_MOISTURE)
+        return self.last_moisture
+    
+    def get_conductivity(self):
+        self.last_conductivity = self.poller.parameter_value(MI_CONDUCTIVITY)
+        return self.last_conductivity
+    
+    def get_light(self):
+        self.last_light = self.poller.parameter_value(MI_LIGHT)
+        return self.last_light
+
+
+
+if __name__ == '__main__':
+    sens = MiSensor(device_2)
+    temp = sens.get_temperature()
+    print(temp)
