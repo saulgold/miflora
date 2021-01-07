@@ -30,12 +30,12 @@ def create_plot():
 
         #)
 
-        go.Scatter(
+        go.Line(
             
            x=sensor_data['time'],
            y=sensor_data['temperature_green'],
-           title='Sensor Temperature',
-           mode='lines'
+           
+           
 
            )
     ]
