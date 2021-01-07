@@ -16,8 +16,8 @@ def tom():
 
 @app.route('/plot')
 def plot():
-    graph = create_plot()
-    return render_template('plot.html', plot=graph)
+    graphs= create_plot()
+    return render_template('plot.html', plot0=graphs[0], plot1=graphs[1],plot2=graphs[2],plot3=graphs[3],plot4=graphs[4] )
 
 @app.route('/sensor')
 def get_sensor_readings():

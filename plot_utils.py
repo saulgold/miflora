@@ -11,35 +11,21 @@ def create_plot():
     configs = load_configs()
     csv_path = configs['sensor_data_path']
     sensor_data = pd.read_csv(csv_path)
+    graphs = []
+    for k in sensor_data.keys():
+        if k != 'time':
+            fig = go.Figure()    
+            fig.add_trace(
+                go.Line(
+                    x=sensor_data['time'],
+                    y=sensor_data[k]      
+                )
+            )
+            fig.update_layout(title_text=k)
+            data = fig
+            graphJSON = json.dumps(data, cls=plotly.utils.PlotlyJSONEncoder)
+            graphs.append(graphJSON)
 
-    N = 40
-    x = np.linspace(0, 1, N)
-    y = np.random.randn(N)
-    df = pd.DataFrame({'x': x, 'y': y}) # creating a sample dataframe
+    
 
-
-    data = [
-        #go.Line(
-        #    x=sensor_data['time'], # assign x as the dataframe column 'x'
-        #    y=sensor_data['temperature_white']
-        #),
-        #go.Line(
-        #    x=sensor_data['time'],
-        #    y=sensor_data['temperature_green']
-        #    title='Sensor Temperature'
-
-        #)
-
-        go.Line(
-            
-           x=sensor_data['time'],
-           y=sensor_data['temperature_green'],
-           
-           
-
-           )
-    ]
-
-    graphJSON = json.dumps(data, cls=plotly.utils.PlotlyJSONEncoder)
-
-    return graphJSON
+    return graphs
