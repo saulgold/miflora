@@ -1,5 +1,6 @@
-sensor_white: 'C4:7C:8D:66:64:39' #white sensor
-sensor_green: '80:EA:CA:89:03:71' #green sensor
-
-sensor_data_path: '/home/pi/Documents/sensor_data.csv'
-sensor_log_path: '/home/pi/logs/sensor_logs.log'
+sensors:
+  sensor_white: C4:7C:8D:66:64:39 #white sensor
+  sensor_green: 80:EA:CA:89:03:71 #green sensor
+sensor_data_path: /home/pi/Documents/sensor_data.csv # remove
+data_dir: /home/pi/sensor_data/
+sensor_log_path: /home/pi/logs/sensor_logs.log

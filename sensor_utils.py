@@ -4,7 +4,7 @@ from btlewrap.bluepy import BluepyBackend
 from miflora import miflora_scanner
 from miflora.miflora_poller import MiFloraPoller, \
             MI_CONDUCTIVITY, MI_MOISTURE, MI_LIGHT, MI_TEMPERATURE, MI_BATTERY
-
+import signal
 device_1 = 'C4:7C:8D:66:64:39' #white sensor
 device_2 = '80:EA:CA:89:03:71' #green sensor
 
@@ -17,7 +17,12 @@ device_2 = '80:EA:CA:89:03:71' #green sensor
 
 class MiSensor:
     def __init__(self, mac):
-        self.poller = MiFloraPoller(mac, BluepyBackend)
+        self.poller = MiFloraPoller(mac, BluepyBackend, cache_timeout=1, retries=0)
+        self.mac = mac
+
+        name = self.poller.name()
+
+
 
 
     def get_temperature(self):
@@ -43,7 +48,7 @@ class MiSensor:
 
 
 
-if __name__ == '__main__':
-    sens = MiSensor(device_2)
-    temp = sens.get_temperature()
-    print(temp)
+# if __name__ == '__main__':
+#     sens = MiSensor(device_2)
+#     temp = sens.get_temperature()
+#     print(temp)

@@ -11,18 +11,14 @@ import yaml
 from sensor_utils import MiSensor
 from config_utils.config import load_configs
 configs = load_configs()
-sensor_data_csv = configs['sensor_data_path']
+sensor_data_dir = configs['data_dir']
 log_path = configs['sensor_log_path']
 logging.basicConfig(filename = log_path, level=logging.DEBUG)
 logging.info('bluetooth sensor logging initialised')
 logging.info('Initialising sensor')
-print(configs['sensor_white'])
-#sensor = MiPlant(address = 'c4:7c:8d:66:64:39')
-sensor_white = MiSensor(configs['sensor_white'])
-sensor_green = MiSensor(configs['sensor_green'])
 
 logging.info('Sensor initialised')
-wait_time = 5 
+wait_time = 60 
 
 def dict_to_csv(in_dict, save_file): 
     my_dict = in_dict
@@ -36,29 +32,36 @@ def dict_to_csv(in_dict, save_file):
 if __name__ == '__main__':
     logging.info('Entering loop')
     while True:
- 
-        now = datetime.datetime.now()
-        print(now)
-        logging.info('Time: %s',  now.strftime("%m/%d/%Y, %H:%M:%S"))
-        logging.info('Reading from sensor')
-       
-        
-        sensor_dict = collections.OrderedDict()
-        print(sensor_dict)
-        logging.info('Read successful')
-        sensor_dict['time'] =  now
-        #sensor_dict['temperature_white']= sensor_white.get_temperature()
-        sensor_dict['temperature_green'] = sensor_green.get_temperature()
-        sensor_dict['battery_green'] = sensor_green.get_battery()
-        sensor_dict['light_green'] = sensor_green.get_light()
-        sensor_dict['moisture_green'] = sensor_green.get_moisture()
-        sensor_dict['conductivity_green'] = sensor_green.get_conductivity()
-        print(sensor_dict)
-       
-        logging.info('Saving sensor data to: '+sensor_data_csv)
-        if not os.path.isdir(os.path.dirname(sensor_data_csv)):
-            os.makedirs(os.path.dirname(sensor_data_csv))
-        dict_to_csv(sensor_dict, sensor_data_csv)
-        logging.info('Save successful')
-        logging.info('Waiting : %s seconds', str( wait_time))
+        sensors = configs['sensors']
+        for sensor in sensors:
+            sensor_data_csv = os.path.join(sensor_data_dir,sensor+'.csv')
+
+            mac = sensors[sensor]
+            ms = MiSensor(mac)
+
+            now = datetime.datetime.now()
+            print(now)
+            logging.info('Time: %s', now.strftime("%m/%d/%Y, %H:%M:%S"))
+            logging.info('Reading from sensor')
+
+            sensor_dict = collections.OrderedDict()
+            logging.info('Read successful')
+            sensor_dict['time'] = now
+            sensor_dict['temperature'] = ms.get_temperature()
+            sensor_dict['battery'] = ms.get_battery()
+            sensor_dict['light'] = ms.get_light()
+            sensor_dict['moisture'] = ms.get_moisture()
+            sensor_dict['conductivity'] = ms.get_conductivity()
+            print(sensor_dict)
+
+            logging.info('Saving sensor data to: ' + sensor_data_csv)
+            print('Saving sensor data to: ' + sensor_data_csv)
+            if not os.path.isdir(os.path.dirname(sensor_data_csv)):
+                os.makedirs(os.path.dirname(sensor_data_csv))
+            dict_to_csv(sensor_dict, sensor_data_csv)
+            logging.info('Save successful')
+            logging.info('Waiting : %s seconds', str(wait_time))
+
+
+
         time.sleep(wait_time)
